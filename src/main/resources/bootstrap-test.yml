@@ -1,0 +1,11 @@
+spring:
+  profiles: test
+
+server:
+  port: 5006
+  url: http://localhost:5005
+
+spring.cloud.vault.enabled: false
+
+token:
+  secret: "482B4D6251655468576D597133743677397A24432646294A404E635266556A58"

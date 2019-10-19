@@ -1,0 +1,19 @@
+spring:
+  profiles: staging
+
+server:
+  port: 4430
+
+spring.cloud.vault:
+  scheme: https
+  host: ${VAULT_HOSTNAME}
+  port: ${VAULT_PORT}
+  authentication: TOKEN
+  token: ${VAULT_TOKEN}
+  kv:
+    enabled: true
+    backend: ${VAULT_BACKEND}
+    application-name: configuration
+  connection-timeout: 5000
+  read-timeout: 15000
+  fail-fast: true
