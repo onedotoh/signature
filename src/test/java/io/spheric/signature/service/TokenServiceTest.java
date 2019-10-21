@@ -63,10 +63,10 @@ public class TokenServiceTest extends SignatureApplicationTests {
 
 	@Test
 	public void adaptToken() {
-		String authorizationToken = this.authorizationToken.get();
-		String registrationToken = this.registrationToken.get();
-		String passwordUpdateToken = this.passwordUpdateToken.get();
-		String emailUpdateToken = this.emailUpdateToken.get();
+		String authorizationToken = this.authorizationToken.getToken();
+		String registrationToken = this.registrationToken.getToken();
+		String passwordUpdateToken = this.passwordUpdateToken.getToken();
+		String emailUpdateToken = this.emailUpdateToken.getToken();
 
 		assertEquals(this.authorizationToken, tokenService.adapt(authorizationToken));
 		assertEquals(this.registrationToken, tokenService.adapt(registrationToken));

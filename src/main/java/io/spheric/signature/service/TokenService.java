@@ -25,49 +25,49 @@ public class TokenService {
 	}
 
 	public AuthorizationToken authorization(String userId, String role) {
-		Claims claims = getClaims(userId, TokenType.AUTHORIZATION);
+		Claims claims = buildClaims(userId, TokenType.AUTHORIZATION);
 		claims.put("role", role);
-		String token = build(claims);
+		String token = buildToken(claims);
 
-		return new AuthorizationToken(userId, issuer, claims.getIssuedAt(), claims.getExpiration(), role, token);
+		return (AuthorizationToken) TokenAdapter.adapt(claims, token);
 	}
 
 	public RegistrationToken registration(String userId) {
-		Claims claims = getClaims(userId, TokenType.REGISTRATION);
-		String token = build(claims);
+		Claims claims = buildClaims(userId, TokenType.REGISTRATION);
+		String token = buildToken(claims);
 
-		return new RegistrationToken(userId, issuer, claims.getIssuedAt(), claims.getExpiration(), token);
+		return (RegistrationToken) TokenAdapter.adapt(claims, token);
 	}
 
 	public EmailUpdateToken emailUpdate(String userId, String oldEmail, String newEmail) {
-		Claims claims = getClaims(userId, TokenType.EMAIL_UPDATE);
+		Claims claims = buildClaims(userId, TokenType.EMAIL_UPDATE);
 		claims.put("old-email", oldEmail);
 		claims.put("new-email", newEmail);
-		String token = build(claims);
+		String token = buildToken(claims);
 
-		return new EmailUpdateToken(userId, issuer, claims.getIssuedAt(), claims.getExpiration(), token, oldEmail, newEmail);
+		return (EmailUpdateToken) TokenAdapter.adapt(claims, token);
 	}
 
 	public PasswordUpdateToken passwordUpdate(String userId) {
-		Claims claims = getClaims(userId, TokenType.PASSWORD_UPDATE);
-		String token = build(claims);
+		Claims claims = buildClaims(userId, TokenType.PASSWORD_UPDATE);
+		String token = buildToken(claims);
 
 		return new PasswordUpdateToken(userId, issuer, claims.getIssuedAt(), claims.getExpiration(), token);
 	}
 
 	public void validate(Token token, TokenType expectedType) {
-		if (!expectedType.equals(token.getType())) {
-			throw new InvalidTokenException(String.format("Type is not [%s]", expectedType), token.get());
+		if (!expectedType.equals(token.getTokenType())) {
+			throw new InvalidTokenException(String.format("Type is not [%s]", expectedType), token.getToken());
 		}
 
 		if (!issuer.equals(token.getIssuer())) {
-			throw new InvalidTokenException(String.format("Issuer is not [%s]", issuer), token.get());
+			throw new InvalidTokenException(String.format("Issuer is not [%s]", issuer), token.getToken());
 		}
 
 		try {
-			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token.get());
+			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token.getToken());
 		} catch (JwtException | IllegalArgumentException exception) {
-			throw new InvalidTokenException("Expired or invalid JWT token", token.get(), exception);
+			throw new InvalidTokenException("Expired or invalid JWT token", token.getToken(), exception);
 		}
 	}
 
@@ -84,27 +84,10 @@ public class TokenService {
 			throw new InvalidTokenException(String.format("Issuer is not [%s]", issuer), token);
 		}
 
-		TokenType type = TokenType.valueOf(claims.get("type", String.class));
-
-		switch (type) {
-			case AUTHORIZATION:
-				return new AuthorizationToken(claims.getSubject(), issuer,
-						claims.getIssuedAt(), claims.getExpiration(), claims.get("role", String.class), token);
-			case REGISTRATION:
-				return new RegistrationToken(claims.getSubject(), issuer,
-						claims.getIssuedAt(), claims.getExpiration(), token);
-			case EMAIL_UPDATE:
-				return new EmailUpdateToken(claims.getSubject(), issuer,
-						claims.getIssuedAt(), claims.getExpiration(), token, claims.get("old-email", String.class), claims.get("new-email", String.class));
-			case PASSWORD_UPDATE:
-				return new PasswordUpdateToken(claims.getSubject(), issuer,
-						claims.getIssuedAt(), claims.getExpiration(), token);
-			default:
-				throw new InvalidTokenException("Unexpected type: " + type, token);
-		}
+		return TokenAdapter.adapt(claims, token);
 	}
 
-	private Claims getClaims(String userId, TokenType tokenType) {
+	private Claims buildClaims(String userId, TokenType tokenType) {
 		Date now = new Date();
 		Date expirationDate = new Date(now.getTime() + tokenType.getDuration());
 
@@ -113,7 +96,7 @@ public class TokenService {
 				.setIssuer(this.issuer)
 				.setIssuedAt(now)
 				.setExpiration(expirationDate);
-		claims.put("type", tokenType);
+		claims.put("type", tokenType.name());
 
 		return claims;
 	}
@@ -122,18 +105,15 @@ public class TokenService {
 		String bearerToken = request.getHeader("Authorization");
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			Token token = this.adapt(bearerToken.substring(7));
-
-			if (!TokenType.AUTHORIZATION.equals(token.getType())) {
-				throw new InvalidTokenException(String.format("Type is not [%s]", TokenType.AUTHORIZATION), token.get());
+			if (!TokenType.AUTHORIZATION.equals(token.getTokenType())) {
+				throw new InvalidTokenException(String.format("Type is not [%s]", TokenType.AUTHORIZATION), token.getToken());
 			}
-
 			return (AuthorizationToken) token;
 		}
-
 		return null;
 	}
 
-	private String build(Claims claims) {
+	private String buildToken(Claims claims) {
 		return Jwts.builder()
 				.setClaims(claims)
 				.signWith(secretKey)

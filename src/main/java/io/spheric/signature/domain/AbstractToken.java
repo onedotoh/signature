@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Objects;
 
 public abstract class AbstractToken implements Token {
-
 	private final Date expirationDate;
 	private final Date issueDate;
 	private final String issuer;
@@ -12,7 +11,13 @@ public abstract class AbstractToken implements Token {
 	private final TokenType tokenType;
 	private final String userId;
 
-	AbstractToken(String userId, TokenType tokenType, String issuer, Date issueDate, Date expirationDate, String token) {
+	public AbstractToken(
+			String userId,
+			TokenType tokenType,
+			String issuer,
+			Date issueDate,
+			Date expirationDate,
+			String token) {
 		this.tokenType = tokenType;
 		this.expirationDate = expirationDate;
 		this.issueDate = issueDate;
@@ -43,18 +48,18 @@ public abstract class AbstractToken implements Token {
 	}
 
 	@Override
-	public TokenType getType() {
+	public TokenType getTokenType() {
 		return tokenType;
 	}
 
 	@Override
-	public String get() {
+	public String getToken() {
 		return token;
 	}
 
 	@Override
 	public String toString() {
-		return this.get();
+		return this.getToken();
 	}
 
 	@Override

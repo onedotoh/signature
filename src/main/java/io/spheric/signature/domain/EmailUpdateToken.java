@@ -1,8 +1,11 @@
 package io.spheric.signature.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.Date;
 import java.util.Objects;
 
+@JsonTypeName("email-update")
 public class EmailUpdateToken extends AbstractToken {
 	private final String newEmail;
 	private final String oldEmail;
