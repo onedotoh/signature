@@ -1,12 +1,21 @@
 package io.spheric.signature.domain;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.util.Map;
 
 @JsonTypeName("password-update")
+@EqualsAndHashCode(callSuper = true)
 public class PasswordUpdateToken extends AbstractToken {
-	public PasswordUpdateToken(String userId, String issuer, Date issueDate, Date expirationDate, String token) {
-		super(userId, TokenType.PASSWORD_UPDATE, issuer, issueDate, expirationDate, token);
+	private static final TokenType type = TokenType.PASSWORD_UPDATE;
+
+	public PasswordUpdateToken(Map<TokenClaim, String> claims, String token) {
+		super(claims, token);
+	}
+
+	@Override
+	public TokenType getType() {
+		return type;
 	}
 }

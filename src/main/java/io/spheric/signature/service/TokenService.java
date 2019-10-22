@@ -52,11 +52,11 @@ public class TokenService {
 		Claims claims = buildClaims(userId, TokenType.PASSWORD_UPDATE);
 		String token = buildToken(claims);
 
-		return new PasswordUpdateToken(userId, issuer, claims.getIssuedAt(), claims.getExpiration(), token);
+		return (PasswordUpdateToken) TokenAdapter.adapt(claims, token);
 	}
 
 	public void validate(Token token, TokenType expectedType) {
-		if (!expectedType.equals(token.getTokenType())) {
+		if (!expectedType.equals(token.getType())) {
 			throw new InvalidTokenException(String.format("Type is not [%s]", expectedType), token.getToken());
 		}
 
@@ -105,7 +105,7 @@ public class TokenService {
 		String bearerToken = request.getHeader("Authorization");
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			Token token = this.adapt(bearerToken.substring(7));
-			if (!TokenType.AUTHORIZATION.equals(token.getTokenType())) {
+			if (!TokenType.AUTHORIZATION.equals(token.getType())) {
 				throw new InvalidTokenException(String.format("Type is not [%s]", TokenType.AUTHORIZATION), token.getToken());
 			}
 			return (AuthorizationToken) token;

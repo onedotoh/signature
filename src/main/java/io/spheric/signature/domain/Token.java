@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.Date;
+import java.util.Map;
 
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
@@ -15,11 +16,13 @@ import java.util.Date;
 		@JsonSubTypes.Type(value = RegistrationToken.class, name = "registration")
 })
 public interface Token {
+	Map<TokenClaim, String> getClaims();
+
 	String getUserId();
 
 	String getToken();
 
-	TokenType getTokenType();
+	TokenType getType();
 
 	String getIssuer();
 

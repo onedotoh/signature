@@ -11,38 +11,13 @@ public class TokenAdapter {
 
 		switch (type) {
 			case AUTHORIZATION:
-				return new AuthorizationToken(
-						claims.getSubject(),
-						claims.getIssuer(),
-						claims.getIssuedAt(),
-						claims.getExpiration(),
-						claims.get("role", String.class),
-						token
-				);
+				return new AuthorizationToken(ClaimsAdapter.adapt(claims), token);
 			case REGISTRATION:
-				return new RegistrationToken(
-						claims.getSubject(),
-						claims.getIssuer(),
-						claims.getIssuedAt(),
-						claims.getExpiration(),
-						token
-				);
+				return new RegistrationToken(ClaimsAdapter.adapt(claims), token);
 			case EMAIL_UPDATE:
-				return new EmailUpdateToken(
-						claims.getSubject(),
-						claims.getIssuer(),
-						claims.getIssuedAt(),
-						claims.getExpiration(),
-						token,
-						claims.get("old-email", String.class),
-						claims.get("new-email", String.class));
+				return new EmailUpdateToken(ClaimsAdapter.adapt(claims), token);
 			case PASSWORD_UPDATE:
-				return new PasswordUpdateToken(
-						claims.getSubject(),
-						claims.getIssuer(),
-						claims.getIssuedAt(),
-						claims.getExpiration(),
-						token);
+				return new PasswordUpdateToken(ClaimsAdapter.adapt(claims), token);
 			default:
 				throw new InvalidTokenException("Unexpected type: " + type, token);
 		}
