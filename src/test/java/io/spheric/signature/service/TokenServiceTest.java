@@ -16,10 +16,10 @@ public class TokenServiceTest extends SignatureApplicationTests {
 
 	private final String role = "MEMBER";
 	private final ObjectId userId = ObjectId.get();
-	private AuthorizationToken authorizationToken;
-	private EmailUpdateToken emailUpdateToken;
-	private PasswordUpdateToken passwordUpdateToken;
-	private RegistrationToken registrationToken;
+	private Token authorizationToken;
+	private Token emailUpdateToken;
+	private Token passwordUpdateToken;
+	private Token registrationToken;
 	@Autowired
 	private TokenService tokenService;
 
@@ -36,7 +36,7 @@ public class TokenServiceTest extends SignatureApplicationTests {
 		tokenService.validate(authorizationToken, TokenType.AUTHORIZATION);
 
 		assertEquals(userId.toString(), authorizationToken.getUserId());
-		assertEquals(role, authorizationToken.getRole());
+		assertEquals(role, authorizationToken.getClaims().get(TokenClaim.ROLE));
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class TokenServiceTest extends SignatureApplicationTests {
 		tokenService.validate(emailUpdateToken, TokenType.EMAIL_UPDATE);
 
 		assertEquals(userId.toString(), emailUpdateToken.getUserId());
-		assertEquals(newEmail, emailUpdateToken.getNewEmail());
+		assertEquals(newEmail, emailUpdateToken.getClaims().get(TokenClaim.NEW_EMAIL));
 	}
 
 	@Test

@@ -1,7 +1,6 @@
 package io.spheric.signature.controller;
 
 import io.spheric.signature.client.TokenClient;
-import io.spheric.signature.domain.AuthorizationToken;
 import io.spheric.signature.domain.Token;
 import io.spheric.signature.service.TokenService;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ public class TokenController implements TokenClient {
 	}
 
 	public ResponseEntity<String> generateAuthorizationToken(@PathVariable(name = "ownerId") String ownerId, @PathVariable(name = "role") String role) {
-		AuthorizationToken authorizationToken = this.tokenService.authorization(ownerId, role);
+		Token authorizationToken = this.tokenService.authorization(ownerId, role);
 		return ResponseEntity.ok(authorizationToken.getToken());
 	}
 

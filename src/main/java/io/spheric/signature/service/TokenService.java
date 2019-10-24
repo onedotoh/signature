@@ -24,35 +24,35 @@ public class TokenService {
 		this.secretKey = tokenConfiguration.getSecret();
 	}
 
-	public AuthorizationToken authorization(String userId, String role) {
+	public Token authorization(String userId, String role) {
 		Claims claims = buildClaims(userId, TokenType.AUTHORIZATION);
 		claims.put("role", role);
 		String token = buildToken(claims);
 
-		return (AuthorizationToken) TokenAdapter.adapt(claims, token);
+		return TokenAdapter.adapt(claims, token);
 	}
 
-	public RegistrationToken registration(String userId) {
+	public Token registration(String userId) {
 		Claims claims = buildClaims(userId, TokenType.REGISTRATION);
 		String token = buildToken(claims);
 
-		return (RegistrationToken) TokenAdapter.adapt(claims, token);
+		return TokenAdapter.adapt(claims, token);
 	}
 
-	public EmailUpdateToken emailUpdate(String userId, String oldEmail, String newEmail) {
+	public Token emailUpdate(String userId, String oldEmail, String newEmail) {
 		Claims claims = buildClaims(userId, TokenType.EMAIL_UPDATE);
 		claims.put("old-email", oldEmail);
 		claims.put("new-email", newEmail);
 		String token = buildToken(claims);
 
-		return (EmailUpdateToken) TokenAdapter.adapt(claims, token);
+		return TokenAdapter.adapt(claims, token);
 	}
 
-	public PasswordUpdateToken passwordUpdate(String userId) {
+	public Token passwordUpdate(String userId) {
 		Claims claims = buildClaims(userId, TokenType.PASSWORD_UPDATE);
 		String token = buildToken(claims);
 
-		return (PasswordUpdateToken) TokenAdapter.adapt(claims, token);
+		return TokenAdapter.adapt(claims, token);
 	}
 
 	public void validate(Token token, TokenType expectedType) {
@@ -101,14 +101,14 @@ public class TokenService {
 		return claims;
 	}
 
-	public AuthorizationToken resolve(HttpServletRequest request) {
+	public Token resolve(HttpServletRequest request) {
 		String bearerToken = request.getHeader("Authorization");
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			Token token = this.adapt(bearerToken.substring(7));
 			if (!TokenType.AUTHORIZATION.equals(token.getType())) {
 				throw new InvalidTokenException(String.format("Type is not [%s]", TokenType.AUTHORIZATION), token.getToken());
 			}
-			return (AuthorizationToken) token;
+			return token;
 		}
 		return null;
 	}

@@ -1,20 +1,11 @@
 package io.spheric.signature.domain;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
 import java.util.Map;
 
-@JsonTypeInfo(
-		use = JsonTypeInfo.Id.NAME,
-		property = "type")
-@JsonSubTypes({
-		@JsonSubTypes.Type(value = AuthorizationToken.class, name = "authorization"),
-		@JsonSubTypes.Type(value = PasswordUpdateToken.class, name = "password-update"),
-		@JsonSubTypes.Type(value = EmailUpdateToken.class, name = "email-update"),
-		@JsonSubTypes.Type(value = RegistrationToken.class, name = "registration")
-})
+@JsonDeserialize(as=DefaultToken.class)
 public interface Token {
 	Map<TokenClaim, String> getClaims();
 

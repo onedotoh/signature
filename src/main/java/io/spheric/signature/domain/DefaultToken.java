@@ -1,15 +1,30 @@
 package io.spheric.signature.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import java.beans.ConstructorProperties;
 import java.util.Date;
 import java.util.Map;
 
-@Data
-public abstract class AbstractToken implements Token {
+@EqualsAndHashCode
+public class DefaultToken implements Token {
 	private final Map<TokenClaim, String> claims;
 	private final String token;
+
+	@ConstructorProperties({"claims", "token"})
+
+	@JsonCreator
+	public DefaultToken(Map<TokenClaim, String> claims, String token) {
+		this.claims = claims;
+		this.token = token;
+	}
+
+	@Override
+	public Map<TokenClaim, String> getClaims() {
+		return claims;
+	}
 
 	@Override
 	@JsonIgnore
@@ -38,6 +53,11 @@ public abstract class AbstractToken implements Token {
 	@Override
 	public String getToken() {
 		return token;
+	}
+
+	@Override
+	public TokenType getType() {
+		return TokenType.valueOf(claims.get(TokenClaim.TYPE));
 	}
 
 	@Override

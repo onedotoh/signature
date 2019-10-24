@@ -20,7 +20,7 @@ public class TokenClientTest extends SignatureApplicationTests {
 	public void generateAuthorizationToken() {
 		String ownerId = "owner-id";
 		String role = "admin";
-		AuthorizationToken authorizationToken = tokenService.authorization(ownerId, role);
+		Token authorizationToken = tokenService.authorization(ownerId, role);
 		ResponseEntity<String> response = tokenClient.generateAuthorizationToken(ownerId, role);
 		assertEquals(authorizationToken.getToken(), response.getBody());
 	}
@@ -29,7 +29,7 @@ public class TokenClientTest extends SignatureApplicationTests {
 	public void adaptToken() {
 		String ownerId = "owner-id";
 		String role = "admin";
-		AuthorizationToken authorizationToken = tokenService.authorization(ownerId, role);
+		Token authorizationToken = tokenService.authorization(ownerId, role);
 		ResponseEntity<Token> response = tokenClient.adaptToken(authorizationToken.getToken());
 		assertEquals(authorizationToken, response.getBody());
 
