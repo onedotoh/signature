@@ -19,17 +19,17 @@ public class TokenClientTest extends SignatureApplicationTests {
 	@Test
 	public void generateAuthorizationToken() {
 		String ownerId = "owner-id";
-		String role = "admin";
-		Token authorizationToken = tokenService.authorization(ownerId, role);
-		ResponseEntity<String> response = tokenClient.generateAuthorizationToken(ownerId, role);
+		String type = "auth";
+		Token authorizationToken = tokenService.generate(ownerId, type);
+		ResponseEntity<String> response = tokenClient.generate(ownerId, type);
 		assertEquals(authorizationToken.getToken(), response.getBody());
 	}
 
 	@Test
 	public void adaptToken() {
 		String ownerId = "owner-id";
-		String role = "admin";
-		Token authorizationToken = tokenService.authorization(ownerId, role);
+		String type = "auth";
+		Token authorizationToken = tokenService.generate(ownerId, type);
 		ResponseEntity<Token> response = tokenClient.adaptToken(authorizationToken.getToken());
 		assertEquals(authorizationToken, response.getBody());
 

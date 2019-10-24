@@ -17,8 +17,8 @@ public class TokenController implements TokenClient {
 		this.tokenService = tokenService;
 	}
 
-	public ResponseEntity<String> generateAuthorizationToken(@PathVariable(name = "ownerId") String ownerId, @PathVariable(name = "role") String role) {
-		Token authorizationToken = this.tokenService.authorization(ownerId, role);
+	public ResponseEntity<String> generate(@PathVariable(name = "ownerId") String ownerId, @PathVariable(name = "type") String type) {
+		Token authorizationToken = this.tokenService.generate(ownerId, type);
 		return ResponseEntity.ok(authorizationToken.getToken());
 	}
 

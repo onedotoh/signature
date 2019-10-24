@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.spheric.signature.configuration.TokenConfiguration;
 import io.spheric.signature.exception.InvalidTokenException;
 import io.spheric.signature.domain.*;
-import io.spheric.signature.domain.TokenType;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -24,38 +23,14 @@ public class TokenService {
 		this.secretKey = tokenConfiguration.getSecret();
 	}
 
-	public Token authorization(String userId, String role) {
-		Claims claims = buildClaims(userId, TokenType.AUTHORIZATION);
-		claims.put("role", role);
+	public Token generate(String userId, String type) {
+		Claims claims = buildClaims(userId, type);
 		String token = buildToken(claims);
 
 		return TokenAdapter.adapt(claims, token);
 	}
 
-	public Token registration(String userId) {
-		Claims claims = buildClaims(userId, TokenType.REGISTRATION);
-		String token = buildToken(claims);
-
-		return TokenAdapter.adapt(claims, token);
-	}
-
-	public Token emailUpdate(String userId, String oldEmail, String newEmail) {
-		Claims claims = buildClaims(userId, TokenType.EMAIL_UPDATE);
-		claims.put("old-email", oldEmail);
-		claims.put("new-email", newEmail);
-		String token = buildToken(claims);
-
-		return TokenAdapter.adapt(claims, token);
-	}
-
-	public Token passwordUpdate(String userId) {
-		Claims claims = buildClaims(userId, TokenType.PASSWORD_UPDATE);
-		String token = buildToken(claims);
-
-		return TokenAdapter.adapt(claims, token);
-	}
-
-	public void validate(Token token, TokenType expectedType) {
+	public void validate(Token token, String expectedType) {
 		if (!expectedType.equals(token.getType())) {
 			throw new InvalidTokenException(String.format("Type is not [%s]", expectedType), token.getToken());
 		}
@@ -87,16 +62,16 @@ public class TokenService {
 		return TokenAdapter.adapt(claims, token);
 	}
 
-	private Claims buildClaims(String userId, TokenType tokenType) {
+	private Claims buildClaims(String userId, String tokenType) {
 		Date now = new Date();
-		Date expirationDate = new Date(now.getTime() + tokenType.getDuration());
+//		Date expirationDate = new Date(now.getTime() + tokenType.getDuration());
 
 		Claims claims = Jwts.claims()
 				.setSubject(userId)
 				.setIssuer(this.issuer)
-				.setIssuedAt(now)
-				.setExpiration(expirationDate);
-		claims.put("type", tokenType.name());
+				.setIssuedAt(now);
+//				.setExpiration(expirationDate);
+		claims.put("type", tokenType);
 
 		return claims;
 	}
@@ -105,8 +80,8 @@ public class TokenService {
 		String bearerToken = request.getHeader("Authorization");
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			Token token = this.adapt(bearerToken.substring(7));
-			if (!TokenType.AUTHORIZATION.equals(token.getType())) {
-				throw new InvalidTokenException(String.format("Type is not [%s]", TokenType.AUTHORIZATION), token.getToken());
+			if (!"authorization".equals(token.getType())) {
+				throw new InvalidTokenException("Type is not authorization", token.getToken());
 			}
 			return token;
 		}

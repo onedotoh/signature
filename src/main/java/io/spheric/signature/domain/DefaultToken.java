@@ -10,19 +10,19 @@ import java.util.Map;
 
 @EqualsAndHashCode
 public class DefaultToken implements Token {
-	private final Map<TokenClaim, String> claims;
+	private final Map<String, String> claims;
 	private final String token;
 
 	@ConstructorProperties({"claims", "token"})
 
 	@JsonCreator
-	public DefaultToken(Map<TokenClaim, String> claims, String token) {
+	public DefaultToken(Map<String, String> claims, String token) {
 		this.claims = claims;
 		this.token = token;
 	}
 
 	@Override
-	public Map<TokenClaim, String> getClaims() {
+	public Map<String, String> getClaims() {
 		return claims;
 	}
 
@@ -56,8 +56,8 @@ public class DefaultToken implements Token {
 	}
 
 	@Override
-	public TokenType getType() {
-		return TokenType.valueOf(claims.get(TokenClaim.TYPE));
+	public String getType() {
+		return claims.get(TokenClaim.TYPE);
 	}
 
 	@Override

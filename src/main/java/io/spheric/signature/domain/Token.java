@@ -7,13 +7,13 @@ import java.util.Map;
 
 @JsonDeserialize(as=DefaultToken.class)
 public interface Token {
-	Map<TokenClaim, String> getClaims();
+	Map<String, String> getClaims();
 
 	String getUserId();
 
 	String getToken();
 
-	TokenType getType();
+	String getType();
 
 	String getIssuer();
 

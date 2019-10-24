@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(url = "${server.url}", value = "signature-token-client")
 public interface TokenClient {
 	@GetMapping(value = ApiEndpoints.AUTHORIZATION)
-	ResponseEntity<String> generateAuthorizationToken(@RequestParam(name = "ownerId") String ownerId, @RequestParam(name = "role") String role);
+	ResponseEntity<String> generate(@RequestParam(name = "ownerId") String ownerId, @RequestParam(name = "role") String role);
 
 	@GetMapping(value = ApiEndpoints.ADAPT)
 	ResponseEntity<Token> adaptToken(@RequestParam(name = "token") String token);
