@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.spheric.signature.configuration.TokenConfiguration;
+import io.spheric.signature.domain.payload.TokenRequest;
 import io.spheric.signature.exception.InvalidTokenException;
 import io.spheric.signature.domain.*;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class TokenService {
 		this.secretKey = tokenConfiguration.getSecret();
 	}
 
-	public Token generate(String userId, TokenType type) {
-		Claims claims = buildClaims(userId, type);
+	public Token generate(TokenRequest request) {
+		Claims claims = buildClaims(request);
 		String token = buildToken(claims);
 
 		return TokenAdapter.adapt(claims, token);
@@ -62,16 +63,18 @@ public class TokenService {
 		return TokenAdapter.adapt(claims, token);
 	}
 
-	private Claims buildClaims(String userId, TokenType tokenType) {
-		Date now = new Date();
-//		Date expirationDate = new Date(now.getTime() + tokenType.getDuration());
-
+	private Claims buildClaims(TokenRequest request) {
 		Claims claims = Jwts.claims()
-				.setSubject(userId)
+				.setSubject(request.getOwner())
 				.setIssuer(this.issuer)
-				.setIssuedAt(now);
-//				.setExpiration(expirationDate);
-		claims.put("type", tokenType);
+				.setIssuedAt(new Date())
+				.setExpiration(request.getExpiration())
+				.setNotBefore(request.getNotBefore())
+				.setAudience(request.getAudience());
+
+		claims.put(TokenClaim.TYPE, request.getType());
+		claims.put(TokenClaim.INTENTION, request.getIntention());
+		claims.put(TokenClaim.DATA, request.getData());
 
 		return claims;
 	}

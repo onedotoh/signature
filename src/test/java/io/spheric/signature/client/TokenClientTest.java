@@ -1,15 +1,27 @@
 package io.spheric.signature.client;
 
 import io.spheric.signature.SignatureApplicationTests;
-import io.spheric.signature.domain.*;
+import io.spheric.signature.domain.Token;
+import io.spheric.signature.domain.TokenType;
+import io.spheric.signature.domain.payload.TokenRequest;
 import io.spheric.signature.service.TokenService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 
 public class TokenClientTest extends SignatureApplicationTests {
+	private TokenRequest tokenRequest = TokenRequest.builder()
+			.audience("audience")
+			.owner("owner-id")
+			.type(TokenType.AUTHORIZATION)
+			.expiration(new Date(new Date().getTime() + 360000))
+			.intention("authorization")
+			.build();
+	;
 	@Autowired
 	private TokenService tokenService;
 
@@ -17,17 +29,16 @@ public class TokenClientTest extends SignatureApplicationTests {
 	private TokenClient tokenClient;
 
 	@Test
-	public void generateAuthorizationToken() {
-		String ownerId = "owner-id";
-		Token authorizationToken = tokenService.generate(ownerId, TokenType.AUTHORIZATION);
-		ResponseEntity<String> response = tokenClient.generate(ownerId, TokenType.AUTHORIZATION);
-		assertEquals(authorizationToken.getToken(), response.getBody());
+	public void generateToken() {
+		ResponseEntity<Token> response = tokenClient.generate(tokenRequest);
+		Token token = response.getBody();
+		assertEquals(tokenRequest.getOwner(), token.getUserId());
+		assertEquals(tokenRequest.getType(), token.getType());
 	}
 
 	@Test
 	public void adaptToken() {
-		String ownerId = "owner-id";
-		Token authorizationToken = tokenService.generate(ownerId, TokenType.AUTHORIZATION);
+		Token authorizationToken = tokenService.generate(tokenRequest);
 		ResponseEntity<Token> response = tokenClient.adaptToken(authorizationToken.getToken());
 		assertEquals(authorizationToken, response.getBody());
 
