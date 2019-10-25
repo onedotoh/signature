@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class TokenService {
@@ -36,8 +37,9 @@ public class TokenService {
 			throw new InvalidTokenException(String.format("Type is not [%s]", expectedType), token.getToken());
 		}
 
-		if (!issuer.equals(token.getIssuer())) {
-			throw new InvalidTokenException(String.format("Issuer is not [%s]", issuer), token.getToken());
+		Optional<String> issuer = token.getIssuer();
+		if (issuer.isEmpty() || !this.issuer.equals(issuer.get())) {
+			throw new InvalidTokenException(String.format("Issuer is not [%s]", this.issuer), token.getToken());
 		}
 
 		try {

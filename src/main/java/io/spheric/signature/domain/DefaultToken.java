@@ -1,12 +1,12 @@
 package io.spheric.signature.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 
 import java.beans.ConstructorProperties;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 @EqualsAndHashCode
 public class DefaultToken implements Token {
@@ -27,27 +27,48 @@ public class DefaultToken implements Token {
 	}
 
 	@Override
-	@JsonIgnore
-	public String getUserId() {
-		return claims.get(TokenClaim.OWNER);
+	public Optional<String> getOwner() {
+		return Optional.of(claims.get(TokenClaim.OWNER));
 	}
 
 	@Override
-	@JsonIgnore
-	public String getIssuer() {
-		return claims.get(TokenClaim.ISSUER);
+	public Optional<String> getIssuer() {
+		return Optional.of(claims.get(TokenClaim.ISSUER));
 	}
 
 	@Override
-	@JsonIgnore
 	public Date getIssueDate() {
 		return new Date(Long.getLong(claims.get(TokenClaim.ISSUE_DATE)));
 	}
 
 	@Override
-	@JsonIgnore
-	public Date getExpirationDate() {
-		return new Date(Long.getLong(claims.get(TokenClaim.EXPIRATION)));
+	public Optional<Date> getExpirationDate() {
+		return Optional.of(new Date(Long.getLong(claims.get(TokenClaim.EXPIRATION))));
+	}
+
+	@Override
+	public Optional<String> getTokenId() {
+		return Optional.of(claims.get(TokenClaim.TOKEN_ID));
+	}
+
+	@Override
+	public Optional<Date> getNotBeforeDate() {
+		return Optional.of(new Date(Long.getLong(claims.get(TokenClaim.NOT_BEFORE))));
+	}
+
+	@Override
+	public Optional<String> getAudience() {
+		return Optional.of(claims.get(TokenClaim.AUDIENCE));
+	}
+
+	@Override
+	public Optional<String> getIntention() {
+		return Optional.of(claims.get(TokenClaim.INTENTION));
+	}
+
+	@Override
+	public Optional<String> getData() {
+		return Optional.of(claims.get(TokenClaim.DATA));
 	}
 
 	@Override
