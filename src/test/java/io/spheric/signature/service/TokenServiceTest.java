@@ -18,12 +18,12 @@ public class TokenServiceTest extends SignatureApplicationTests {
 
 	@Before
 	public void setup() {
-		token = tokenService.generate(userId.toString(), "authorization");
+		token = tokenService.generate(userId.toString(), TokenType.AUTHORIZATION);
 	}
 
 	@Test
 	public void getRegistrationToken() {
-		tokenService.validate(token, "authorization");
+		tokenService.validate(token, TokenType.AUTHORIZATION);
 
 		assertEquals(userId.toString(), token.getUserId());
 	}
@@ -38,7 +38,7 @@ public class TokenServiceTest extends SignatureApplicationTests {
 
 	@Test(expected = InvalidTokenException.class)
 	public void validateInvalidType() {
-		tokenService.validate(token, "invalid");
+		tokenService.validate(token, TokenType.REFRESH);
 	}
 
 

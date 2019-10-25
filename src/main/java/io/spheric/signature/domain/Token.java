@@ -13,7 +13,7 @@ public interface Token {
 
 	String getToken();
 
-	String getType();
+	TokenType getType();
 
 	String getIssuer();
 

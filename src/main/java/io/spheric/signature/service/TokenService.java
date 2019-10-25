@@ -23,14 +23,14 @@ public class TokenService {
 		this.secretKey = tokenConfiguration.getSecret();
 	}
 
-	public Token generate(String userId, String type) {
+	public Token generate(String userId, TokenType type) {
 		Claims claims = buildClaims(userId, type);
 		String token = buildToken(claims);
 
 		return TokenAdapter.adapt(claims, token);
 	}
 
-	public void validate(Token token, String expectedType) {
+	public void validate(Token token, TokenType expectedType) {
 		if (!expectedType.equals(token.getType())) {
 			throw new InvalidTokenException(String.format("Type is not [%s]", expectedType), token.getToken());
 		}
@@ -62,7 +62,7 @@ public class TokenService {
 		return TokenAdapter.adapt(claims, token);
 	}
 
-	private Claims buildClaims(String userId, String tokenType) {
+	private Claims buildClaims(String userId, TokenType tokenType) {
 		Date now = new Date();
 //		Date expirationDate = new Date(now.getTime() + tokenType.getDuration());
 

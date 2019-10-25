@@ -56,8 +56,8 @@ public class DefaultToken implements Token {
 	}
 
 	@Override
-	public String getType() {
-		return claims.get(TokenClaim.TYPE);
+	public TokenType getType() {
+		return TokenType.valueOf(claims.get(TokenClaim.TYPE));
 	}
 
 	@Override
