@@ -29,7 +29,7 @@ public class DefaultToken implements Token {
 	@Override
 	@JsonIgnore
 	public String getUserId() {
-		return claims.get(TokenClaim.OWNER_ID);
+		return claims.get(TokenClaim.OWNER);
 	}
 
 	@Override
