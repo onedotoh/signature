@@ -35,7 +35,7 @@ public class TokenServiceTest extends SignatureApplicationTests {
 	public void getRegistrationToken() {
 		tokenService.validate(token, TokenType.AUTHORIZATION);
 
-		assertEquals(tokenRequest.getOwner(), token.getOwner());
+		assertEquals(tokenRequest.getOwner(), token.getOwner().get());
 	}
 
 	@Test
