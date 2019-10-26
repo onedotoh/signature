@@ -10,7 +10,6 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.Map;
 
 @Data
 @Builder
@@ -28,7 +27,7 @@ public class TokenRequest {
 	private TokenType type;
 	@NotBlank
 	private String intention;
-	private Map<String, String> data;
+	private String data;
 
 	private TokenRequest() {
 
