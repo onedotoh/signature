@@ -16,5 +16,5 @@ public interface TokenClient {
 	ResponseEntity<Token> generate(@RequestBody TokenRequest request);
 
 	@GetMapping(value = ApiEndpoints.ADAPT)
-	ResponseEntity<Token> adaptToken(@RequestParam(name = "token") String token);
+	ResponseEntity<Token> adaptToken(@RequestParam(name = "jwt") String jwt);
 }

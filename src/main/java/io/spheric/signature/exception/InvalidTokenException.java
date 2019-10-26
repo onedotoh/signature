@@ -1,24 +1,24 @@
 package io.spheric.signature.exception;
 
 public class InvalidTokenException extends RuntimeException {
-	private final String token;
+	private final String jwt;
 
-	public InvalidTokenException(String message, String token, Throwable cause) {
+	public InvalidTokenException(String message, String jwt, Throwable cause) {
 		super(message, cause);
-		this.token = token;
+		this.jwt = jwt;
 	}
 
-	public InvalidTokenException(String message, String token) {
+	public InvalidTokenException(String message, String jwt) {
 		super(message);
-		this.token = token;
+		this.jwt = jwt;
 	}
 
 	public InvalidTokenException(String message) {
 		super(message);
-		this.token = null;
+		this.jwt = null;
 	}
 
 	public String getToken() {
-		return token;
+		return jwt;
 	}
 }

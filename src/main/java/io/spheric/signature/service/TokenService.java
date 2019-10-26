@@ -24,17 +24,17 @@ public class TokenService {
 
 	public Token generate(TokenRequest request) {
 		Claims claims = TokenBuilder.buildClaims(request, issuer);
-		String token = TokenBuilder.buildToken(claims, secretKey);
+		String jwt = TokenBuilder.buildToken(claims, secretKey);
 
-		return TokenAdapter.adapt(token, claims);
+		return TokenAdapter.adapt(jwt, claims);
 	}
 
 	public void validate(Token token) {
 		TokenValidator.validate(token, secretKey, issuer);
 	}
 
-	public Token adapt(String token) {
-		return TokenAdapter.adapt(token, secretKey);
+	public Token adapt(String jwt) {
+		return TokenAdapter.adapt(jwt, secretKey);
 	}
 
 	public Token resolve(HttpServletRequest request) {
@@ -43,9 +43,9 @@ public class TokenService {
 			Token token = this.adapt(bearerToken.substring(7));
 			validate(token);
 			if (!TokenType.AUTHORIZATION.equals(token.getType())) {
-				throw new InvalidTokenException("Type is not authorization", token.getToken());
+				throw new InvalidTokenException("Type is not authorization", token.getJwt());
 			}
-			return adapt(token.getToken());
+			return adapt(token.getJwt());
 		}
 		return null;
 	}

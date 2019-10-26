@@ -39,7 +39,7 @@ public class TokenServiceTest extends SignatureApplicationTests {
 
 	@Test
 	public void adaptToken() {
-		String registrationToken = this.token.getToken();
+		String registrationToken = this.token.getJwt();
 
 		assertEquals(this.token, tokenService.adapt(registrationToken));
 	}

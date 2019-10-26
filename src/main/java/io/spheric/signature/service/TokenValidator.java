@@ -20,9 +20,9 @@ class TokenValidator {
 					.requireSubject(token.getOwner())
 					.requireIssuedAt(token.getIssueDate())
 					.require(TokenClaim.TYPE.getClaim(), token.getType().name())
-					.setSigningKey(secretKey).parseClaimsJws(token.getToken());
+					.setSigningKey(secretKey).parseClaimsJws(token.getJwt());
 		} catch (JwtException | IllegalArgumentException exception) {
-			throw new InvalidTokenException("Expired or invalid JWT token", token.getToken(), exception);
+			throw new InvalidTokenException("Expired or invalid JWT token", token.getJwt(), exception);
 		}
 	}
 }

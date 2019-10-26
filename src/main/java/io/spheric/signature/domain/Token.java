@@ -1,45 +1,76 @@
 package io.spheric.signature.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
-@JsonDeserialize(as = DefaultToken.class)
-public interface Token {
-	Map<TokenClaim, String> getClaims();
+@Data
+public class Token {
+	private final Map<TokenClaim, String> claims;
+	private final String jwt;
+
+	public Map<TokenClaim, String> getClaims() {
+		return claims;
+	}
+
+	public String getOwner() {
+		return claims.get(TokenClaim.OWNER);
+	}
 
 	@JsonIgnore
-	String getOwner();
-
-	String getToken();
-
-	@JsonIgnore
-	TokenType getType();
+	public Optional<String> getIssuer() {
+		return Optional.of(claims.get(TokenClaim.ISSUER));
+	}
 
 	@JsonIgnore
-	Optional<String> getIssuer();
+	public Date getIssueDate() {
+		return new Date(Long.parseLong(claims.get(TokenClaim.ISSUE_DATE)) * 1000);
+	}
 
 	@JsonIgnore
-	Date getIssueDate();
+	public Optional<Date> getExpirationDate() {
+		return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.EXPIRATION)) * 1000));
+	}
 
 	@JsonIgnore
-	Optional<Date> getExpirationDate();
+	public Optional<String> getTokenId() {
+		return Optional.of(claims.get(TokenClaim.TOKEN_ID));
+	}
 
 	@JsonIgnore
-	Optional<String> getTokenId();
+	public Optional<Date> getNotBeforeDate() {
+		return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.NOT_BEFORE)) * 1000));
+	}
 
 	@JsonIgnore
-	Optional<Date> getNotBeforeDate();
+	public Optional<String> getAudience() {
+		return Optional.of(claims.get(TokenClaim.AUDIENCE));
+	}
 
 	@JsonIgnore
-	Optional<String> getAudience();
+	public Optional<String> getIntention() {
+		return Optional.of(claims.get(TokenClaim.DESCRIPTION));
+	}
 
 	@JsonIgnore
-	Optional<String> getIntention();
+	public Optional<String> getData() {
+		return Optional.of(claims.get(TokenClaim.DATA));
+	}
+
+	public String getJwt() {
+		return jwt;
+	}
 
 	@JsonIgnore
-	Optional<String> getData();
+	public TokenType getType() {
+		return TokenType.valueOf(claims.get(TokenClaim.TYPE));
+	}
+
+	@Override
+	public String toString() {
+		return this.getJwt();
+	}
 }

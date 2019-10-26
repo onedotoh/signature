@@ -32,6 +32,7 @@ public class TokenClientTest extends SignatureApplicationTests {
 	public void generateToken() {
 		ResponseEntity<Token> response = tokenClient.generate(tokenRequest);
 		Token token = response.getBody();
+		assert token != null;
 		assertEquals(tokenRequest.getOwner(), token.getOwner());
 		assertEquals(tokenRequest.getType(), token.getType());
 	}
@@ -39,19 +40,7 @@ public class TokenClientTest extends SignatureApplicationTests {
 	@Test
 	public void adaptToken() {
 		Token authorizationToken = tokenService.generate(tokenRequest);
-		ResponseEntity<Token> response = tokenClient.adaptToken(authorizationToken.getToken());
+		ResponseEntity<Token> response = tokenClient.adaptToken(authorizationToken.getJwt());
 		assertEquals(authorizationToken, response.getBody());
-
-//		RegistrationToken registrationToken = tokenService.registration(ownerId);
-//		response = tokenClient.adaptToken(registrationToken.getToken());
-//		assertEquals(registrationToken, response.getBody());
-//
-//		PasswordUpdateToken passwordUpdateToken = tokenService.passwordUpdate(ownerId);
-//		response = tokenClient.adaptToken(passwordUpdateToken.getToken());
-//		assertEquals(passwordUpdateToken, response.getBody());
-//
-//		EmailUpdateToken emailUpdateToken = tokenService.emailUpdate(ownerId, "old@email.spheric", "new@email.spheric");
-//		response = tokenClient.adaptToken(emailUpdateToken.getToken());
-//		assertEquals(emailUpdateToken, response.getBody());
 	}
 }

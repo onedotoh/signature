@@ -23,8 +23,8 @@ public class TokenController implements TokenClient {
 		return ResponseEntity.ok(authorizationToken);
 	}
 
-	public ResponseEntity<Token> adaptToken(String token) {
-		Token adaptedToken = this.tokenService.adapt(token);
+	public ResponseEntity<Token> adaptToken(String jwt) {
+		Token adaptedToken = this.tokenService.adapt(jwt);
 		return ResponseEntity.status(HttpStatus.OK).body(adaptedToken);
 	}
 }
