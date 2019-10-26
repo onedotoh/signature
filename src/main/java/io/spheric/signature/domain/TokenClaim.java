@@ -6,7 +6,7 @@ public enum TokenClaim {
 	TOKEN_ID("jti"),
 	EXPIRATION("exp"),
 	ISSUE_DATE("iat"),
-	NOT_BEFORE("nfb"),
+	NOT_BEFORE("nbf"),
 	AUDIENCE("aud"),
 	TYPE("type"),
 	DESCRIPTION("desc"),

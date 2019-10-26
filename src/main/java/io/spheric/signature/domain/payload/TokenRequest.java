@@ -26,7 +26,7 @@ public class TokenRequest {
 	@NotNull
 	private TokenType type;
 	@NotBlank
-	private String intention;
+	private String description;
 	private String data;
 
 	private TokenRequest() {

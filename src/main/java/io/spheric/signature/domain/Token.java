@@ -21,8 +21,8 @@ public class Token {
 	}
 
 	@JsonIgnore
-	public Optional<String> getIssuer() {
-		return Optional.of(claims.get(TokenClaim.ISSUER));
+	public String getIssuer() {
+		return claims.get(TokenClaim.ISSUER);
 	}
 
 	@JsonIgnore
@@ -36,8 +36,8 @@ public class Token {
 	}
 
 	@JsonIgnore
-	public Optional<String> getTokenId() {
-		return Optional.of(claims.get(TokenClaim.TOKEN_ID));
+	public String getTokenId() {
+		return claims.get(TokenClaim.TOKEN_ID);
 	}
 
 	@JsonIgnore
@@ -51,7 +51,7 @@ public class Token {
 	}
 
 	@JsonIgnore
-	public Optional<String> getIntention() {
+	public Optional<String> getDescription() {
 		return Optional.of(claims.get(TokenClaim.DESCRIPTION));
 	}
 

@@ -19,7 +19,7 @@ public class TokenClientTest extends SignatureApplicationTests {
 			.owner("owner-id")
 			.type(TokenType.AUTHORIZATION)
 			.expiration(new Date(new Date().getTime() + 360000))
-			.intention("authorization")
+			.description("authorization")
 			.build();
 	;
 	@Autowired

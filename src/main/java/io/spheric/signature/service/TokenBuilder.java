@@ -7,6 +7,7 @@ import io.spheric.signature.domain.payload.TokenRequest;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.UUID;
 
 class TokenBuilder {
 
@@ -18,12 +19,13 @@ class TokenBuilder {
 				.setSubject(request.getOwner())
 				.setIssuer(issuer)
 				.setIssuedAt(new Date())
+				.setId(UUID.randomUUID().toString())
 				.setExpiration(request.getExpiration())
 				.setNotBefore(request.getNotBefore())
 				.setAudience(request.getAudience());
 
 		claims.put(TokenClaim.TYPE.getClaim(), request.getType());
-		claims.put(TokenClaim.DESCRIPTION.getClaim(), request.getIntention());
+		claims.put(TokenClaim.DESCRIPTION.getClaim(), request.getDescription());
 		claims.put(TokenClaim.DATA.getClaim(), request.getData());
 
 		return claims;
