@@ -2,15 +2,14 @@ package io.spheric.signature.client;
 
 import io.spheric.signature.AbstractTokenTest;
 import io.spheric.signature.domain.Token;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TokenClientTest extends AbstractTokenTest {
 	@Autowired

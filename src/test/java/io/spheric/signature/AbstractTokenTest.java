@@ -3,7 +3,7 @@ package io.spheric.signature;
 import io.spheric.signature.domain.TokenType;
 import io.spheric.signature.domain.payload.TokenRequest;
 import io.spheric.signature.service.TokenService;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -22,7 +22,7 @@ public abstract class AbstractTokenTest extends SignatureApplicationTests {
 	@Autowired
 	protected TokenService tokenService;
 
-	@Before
+	@BeforeEach
 	public void init() {
 		authorizationTokenRequest = TokenRequest.builder()
 				.audience(audience)
