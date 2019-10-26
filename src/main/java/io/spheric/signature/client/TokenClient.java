@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
-@FeignClient(url = "${server.url}", value = "signature-token-client")
+@FeignClient(url = "${spheric.signature.host}:${spheric.signature.port}", value = "signature-token-client")
 public interface TokenClient {
 	@PostMapping(value = ApiEndpoints.AUTHORIZATION)
 	ResponseEntity<Token> generate(@RequestBody @Valid TokenRequest request);

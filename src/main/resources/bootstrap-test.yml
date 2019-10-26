@@ -3,7 +3,11 @@ spring:
 
 server:
   port: 5006
-  url: http://localhost:5006
+
+spheric:
+  signature:
+    host: http://localhost
+    port: 5006
 
 spring.cloud.vault.enabled: false
 
