@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @JsonDeserialize(as = DefaultToken.class)
 public interface Token {
-	Map<String, String> getClaims();
+	Map<TokenClaim, String> getClaims();
 
 	@JsonIgnore
 	String getOwner();

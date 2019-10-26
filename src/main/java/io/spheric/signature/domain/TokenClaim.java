@@ -1,17 +1,34 @@
 package io.spheric.signature.domain;
 
-public class TokenClaim {
-	public static final String ISSUER = "iss";
-	public static final String OWNER = "sub";
-	public static final String TOKEN_ID = "jti";
-	public static final String EXPIRATION = "exp";
-	public static final String ISSUE_DATE = "iat";
-	public static final String NOT_BEFORE = "nfb";
-	public static final String AUDIENCE = "aud";
-	public static final String TYPE = "type";
-	public static final String DESCRIPTION = "desc";
-	public static final String DATA = "data";
+public enum TokenClaim {
+	ISSUER("iss"),
+	OWNER("sub"),
+	TOKEN_ID("jti"),
+	EXPIRATION("exp"),
+	ISSUE_DATE("iat"),
+	NOT_BEFORE("nfb"),
+	AUDIENCE("aud"),
+	TYPE("type"),
+	DESCRIPTION("desc"),
+	DATA("data");
 
-	private TokenClaim() {
+	private final String claim;
+
+	TokenClaim(String claim) {
+		this.claim = claim;
+	}
+
+	public String getClaim() {
+		return claim;
+	}
+
+	public static TokenClaim fromString(String claim) {
+		for (TokenClaim tokenClaim : TokenClaim.values()) {
+			if (tokenClaim.claim.equalsIgnoreCase(claim)) {
+				return tokenClaim;
+			}
+		}
+
+		throw new IllegalArgumentException(claim + " is not a defined token claim");
 	}
 }

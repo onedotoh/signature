@@ -22,9 +22,9 @@ class TokenBuilder {
 				.setNotBefore(request.getNotBefore())
 				.setAudience(request.getAudience());
 
-		claims.put(TokenClaim.TYPE, request.getType());
-		claims.put(TokenClaim.DESCRIPTION, request.getIntention());
-		claims.put(TokenClaim.DATA, request.getData());
+		claims.put(TokenClaim.TYPE.getClaim(), request.getType());
+		claims.put(TokenClaim.DESCRIPTION.getClaim(), request.getIntention());
+		claims.put(TokenClaim.DATA.getClaim(), request.getData());
 
 		return claims;
 	}

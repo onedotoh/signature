@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.spheric.signature.domain.DefaultToken;
 import io.spheric.signature.domain.Token;
+import io.spheric.signature.domain.TokenClaim;
 import io.spheric.signature.exception.InvalidTokenException;
 
 import javax.crypto.SecretKey;
@@ -29,9 +30,12 @@ class TokenAdapter {
 		}
 	}
 
-	private static Map<String, String> adapt(Claims claims) {
-		Map<String, String> result = new HashMap<>();
-		claims.forEach((claim, value) -> result.put(claim, value.toString()));
+	private static Map<TokenClaim, String> adapt(Claims claims) {
+		Map<TokenClaim, String> result = new HashMap<>();
+		claims.forEach((claim, value) -> {
+			TokenClaim tokenClaim = TokenClaim.fromString(claim);
+			result.put(tokenClaim, value.toString());
+		});
 		return result;
 	}
 }
