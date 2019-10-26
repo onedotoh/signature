@@ -14,7 +14,6 @@ public class DefaultToken implements Token {
 	private final String token;
 
 	@ConstructorProperties({"claims", "token"})
-
 	@JsonCreator
 	public DefaultToken(Map<String, String> claims, String token) {
 		this.claims = claims;
@@ -27,8 +26,8 @@ public class DefaultToken implements Token {
 	}
 
 	@Override
-	public Optional<String> getOwner() {
-		return Optional.of(claims.get(TokenClaim.OWNER));
+	public String getOwner() {
+		return claims.get(TokenClaim.OWNER);
 	}
 
 	@Override
@@ -38,12 +37,12 @@ public class DefaultToken implements Token {
 
 	@Override
 	public Date getIssueDate() {
-		return new Date(Long.getLong(claims.get(TokenClaim.ISSUE_DATE)));
+		return new Date(Long.parseLong(claims.get(TokenClaim.ISSUE_DATE)) * 1000);
 	}
 
 	@Override
 	public Optional<Date> getExpirationDate() {
-		return Optional.of(new Date(Long.getLong(claims.get(TokenClaim.EXPIRATION))));
+		return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.EXPIRATION)) * 1000));
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class DefaultToken implements Token {
 
 	@Override
 	public Optional<Date> getNotBeforeDate() {
-		return Optional.of(new Date(Long.getLong(claims.get(TokenClaim.NOT_BEFORE))));
+		return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.NOT_BEFORE)) * 1000));
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class DefaultToken implements Token {
 
 	@Override
 	public Optional<String> getIntention() {
-		return Optional.of(claims.get(TokenClaim.INTENTION));
+		return Optional.of(claims.get(TokenClaim.DESCRIPTION));
 	}
 
 	@Override

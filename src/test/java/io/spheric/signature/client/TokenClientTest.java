@@ -32,7 +32,7 @@ public class TokenClientTest extends SignatureApplicationTests {
 	public void generateToken() {
 		ResponseEntity<Token> response = tokenClient.generate(tokenRequest);
 		Token token = response.getBody();
-		assertEquals(tokenRequest.getOwner(), token.getOwner().get());
+		assertEquals(tokenRequest.getOwner(), token.getOwner());
 		assertEquals(tokenRequest.getType(), token.getType());
 	}
 

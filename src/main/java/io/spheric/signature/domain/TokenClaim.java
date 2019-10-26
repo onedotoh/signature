@@ -9,7 +9,7 @@ public class TokenClaim {
 	public static final String NOT_BEFORE = "nfb";
 	public static final String AUDIENCE = "aud";
 	public static final String TYPE = "type";
-	public static final String INTENTION = "int";
+	public static final String DESCRIPTION = "desc";
 	public static final String DATA = "data";
 
 	private TokenClaim() {

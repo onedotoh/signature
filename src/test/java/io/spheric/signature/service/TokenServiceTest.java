@@ -4,7 +4,6 @@ import io.spheric.signature.SignatureApplicationTests;
 import io.spheric.signature.domain.Token;
 import io.spheric.signature.domain.TokenType;
 import io.spheric.signature.domain.payload.TokenRequest;
-import io.spheric.signature.exception.InvalidTokenException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,9 @@ public class TokenServiceTest extends SignatureApplicationTests {
 
 	@Test
 	public void getRegistrationToken() {
-		tokenService.validate(token, TokenType.AUTHORIZATION);
+		tokenService.validate(token);
 
-		assertEquals(tokenRequest.getOwner(), token.getOwner().get());
+		assertEquals(tokenRequest.getOwner(), token.getOwner());
 	}
 
 	@Test
@@ -43,12 +42,6 @@ public class TokenServiceTest extends SignatureApplicationTests {
 		String registrationToken = this.token.getToken();
 
 		assertEquals(this.token, tokenService.adapt(registrationToken));
-	}
-
-
-	@Test(expected = InvalidTokenException.class)
-	public void validateInvalidType() {
-		tokenService.validate(token, TokenType.REFRESH);
 	}
 
 

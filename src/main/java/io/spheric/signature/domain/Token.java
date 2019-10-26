@@ -12,7 +12,7 @@ public interface Token {
 	Map<String, String> getClaims();
 
 	@JsonIgnore
-	Optional<String> getOwner();
+	String getOwner();
 
 	String getToken();
 
