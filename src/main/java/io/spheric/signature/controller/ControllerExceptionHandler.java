@@ -15,7 +15,7 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler
-	public ResponseEntity handleRuntimeException(InvalidTokenException e) {
+	public ResponseEntity handleInvalidTokenException(InvalidTokenException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	}
 

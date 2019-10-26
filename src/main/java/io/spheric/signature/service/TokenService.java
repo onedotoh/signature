@@ -9,7 +9,6 @@ import io.spheric.signature.exception.InvalidTokenException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class TokenService {
@@ -37,10 +36,9 @@ public class TokenService {
 		return TokenAdapter.adapt(jwt, secretKey);
 	}
 
-	public Token resolve(HttpServletRequest request) {
-		String bearerToken = request.getHeader("Authorization");
-		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-			Token token = this.adapt(bearerToken.substring(7));
+	public Token resolve(String authorizationHeader) {
+		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+			Token token = this.adapt(authorizationHeader.substring(7));
 			validate(token);
 			if (!TokenType.AUTHORIZATION.equals(token.getType())) {
 				throw new InvalidTokenException("Type is not authorization", token.getJwt());

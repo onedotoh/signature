@@ -10,11 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
+
 @FeignClient(url = "${server.url}", value = "signature-token-client")
 public interface TokenClient {
 	@PostMapping(value = ApiEndpoints.AUTHORIZATION)
-	ResponseEntity<Token> generate(@RequestBody TokenRequest request);
+	ResponseEntity<Token> generate(@RequestBody @Valid TokenRequest request);
 
 	@GetMapping(value = ApiEndpoints.ADAPT)
-	ResponseEntity<Token> adaptToken(@RequestParam(name = "jwt") String jwt);
+	ResponseEntity<Token> adapt(@RequestParam("jwt") String jwt);
+
+	@GetMapping(value = ApiEndpoints.RESOLVE)
+	ResponseEntity<Token> resolve(@RequestParam("header") String authorizationHeader);
+
+	@PostMapping(value = ApiEndpoints.VALIDATE)
+	ResponseEntity<Void> validate(@RequestBody Token token);
 }

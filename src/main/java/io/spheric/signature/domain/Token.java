@@ -32,7 +32,11 @@ public class Token {
 
 	@JsonIgnore
 	public Optional<Date> getExpirationDate() {
-		return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.EXPIRATION)) * 1000));
+		try {
+			return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.EXPIRATION)) * 1000));
+		} catch (Exception e) {
+			return Optional.empty();
+		}
 	}
 
 	@JsonIgnore
@@ -42,7 +46,11 @@ public class Token {
 
 	@JsonIgnore
 	public Optional<Date> getNotBeforeDate() {
-		return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.NOT_BEFORE)) * 1000));
+		try {
+			return Optional.of(new Date(Long.parseLong(claims.get(TokenClaim.NOT_BEFORE)) * 1000));
+		} catch (Exception e) {
+			return Optional.empty();
+		}
 	}
 
 	@JsonIgnore

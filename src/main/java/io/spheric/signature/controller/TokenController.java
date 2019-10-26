@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class TokenController implements TokenClient {
 
@@ -18,13 +20,23 @@ public class TokenController implements TokenClient {
 		this.tokenService = tokenService;
 	}
 
-	public ResponseEntity<Token> generate(@RequestBody TokenRequest request) {
+	public ResponseEntity<Token> generate(@RequestBody @Valid TokenRequest request) {
 		Token authorizationToken = this.tokenService.generate(request);
 		return ResponseEntity.ok(authorizationToken);
 	}
 
-	public ResponseEntity<Token> adaptToken(String jwt) {
+	public ResponseEntity<Token> adapt(String jwt) {
 		Token adaptedToken = this.tokenService.adapt(jwt);
 		return ResponseEntity.status(HttpStatus.OK).body(adaptedToken);
+	}
+
+	public ResponseEntity<Token> resolve(String authorizationHeader) {
+		Token token = tokenService.resolve(authorizationHeader);
+		return ResponseEntity.ok(token);
+	}
+
+	public ResponseEntity<Void> validate(Token token) {
+		tokenService.validate(token);
+		return ResponseEntity.ok().build();
 	}
 }
