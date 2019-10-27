@@ -2,19 +2,9 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      parallel {
-        stage('Build') {
-          agent any
-          steps {
-            bat 'gradlew.bat build'
-          }
-        }
-        stage('error') {
-          steps {
-            echo 'building'
-            sh 'java -version'
-          }
-        }
+      agent any
+      steps {
+        bat 'gradlew.bat build'
       }
     }
     stage('Test') {
