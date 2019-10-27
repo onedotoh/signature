@@ -9,7 +9,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh './gradlew cleanTest test'
+        bat 'gradlew.bat cleanTest test'
       }
     }
     stage('Print Success') {
