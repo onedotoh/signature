@@ -2,14 +2,8 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      agent {
-        docker {
-          image 'gradle:jdk11'
-        }
-
-      }
+      agent any
       steps {
-        sh './gradlew wrapper'
         sh './gradlew build'
       }
     }
