@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'gradle wrapper'
+        sh './gradlew wrapper'
         sh './gradlew build'
       }
     }
