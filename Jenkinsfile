@@ -2,9 +2,18 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      agent any
-      steps {
-        sh './gradlew build'
+      parallel {
+        stage('Build') {
+          agent any
+          steps {
+            sh './gradlew build'
+          }
+        }
+        stage('') {
+          steps {
+            echo 'building'
+          }
+        }
       }
     }
     stage('Test') {
