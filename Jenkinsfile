@@ -6,10 +6,10 @@ pipeline {
         stage('Build') {
           agent any
           steps {
-            sh './gradlew build'
+            bat 'gradlew.bat'
           }
         }
-        stage('') {
+        stage('error') {
           steps {
             echo 'building'
           }
