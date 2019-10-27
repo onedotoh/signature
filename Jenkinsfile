@@ -12,6 +12,7 @@ pipeline {
         stage('error') {
           steps {
             echo 'building'
+            sh 'java -version'
           }
         }
       }
