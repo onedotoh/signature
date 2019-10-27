@@ -61,3 +61,7 @@ dependencyManagement {
 test {
 	useJUnitPlatform()
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '5.3.1'
+}
